@@ -19,12 +19,12 @@ jobs:
       with:
         hugo-version: 0.54.0
         extended: true
+    - name: Deps
+      run: npm install
   build:
     runs-on: ubuntu-latest
     needs: install
     steps:
-      - name: Hugo
-        run: hugo 
       - name: Run scripts
         run: |
           npm run runner
