@@ -30,4 +30,4 @@ jobs:
         REPO: self
         BRANCH: release
         FOLDER: public
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.FOO_TOKEN }}
