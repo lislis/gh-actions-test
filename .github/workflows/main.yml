@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  foo:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Hugo setup
+      uses: peaceiris/actions-hugo@v2.4.5
+      with:
+        hugo-version: 0.54.0
+        extended: true
+    - name: Deps
+      run: npm install
+    - name: Hugo Deps
+      run: hugo
+    - name: Run scripts
+      run: |
+        npm run runner
+    - name: Deploy
+      uses: s0/git-publish-subdir-action@master
+      env:
+        REPO: self
+        BRANCH: release
+        FOLDER: public
+        GITHUB_TOKEN: ${{ secrets.FOO_TOKEN }}
