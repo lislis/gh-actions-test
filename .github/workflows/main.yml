@@ -24,4 +24,10 @@ jobs:
     - name: Run scripts
       run: |
         npm run runner
-        
+    - name: Deploy
+      uses: s0/git-publish-subdir-action@master
+      env:
+        REPO: self
+        BRANCH: release
+        FOLDER: public
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
