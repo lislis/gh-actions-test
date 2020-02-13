@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build:
+  install:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -14,20 +14,28 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '10.x'
-    - name: Install Dependencies
-      run: npm install
     - name: Hugo setup
       uses: peaceiris/actions-hugo@v2.4.5
       with:
         hugo-version: 0.54.0
         extended: true
-    - name: Run scripts
-      run: |
-        npm run runner
-    - name: Deploy
-      uses: s0/git-publish-subdir-action@master
-      env:
-        REPO: self
-        BRANCH: release
-        FOLDER: public
-        GITHUB_TOKEN: ${{ secrets.FOO_TOKEN }}
+  build:
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - name: Hugo
+        run: hugo 
+      - name: Run scripts
+        run: |
+          npm run runner
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy
+        uses: s0/git-publish-subdir-action@master
+        env:
+          REPO: self
+          BRANCH: release
+          FOLDER: public
+          GITHUB_TOKEN: ${{ secrets.FOO_TOKEN }}
